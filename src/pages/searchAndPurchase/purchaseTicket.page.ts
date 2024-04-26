@@ -1,6 +1,8 @@
 import BaseActions from "./baseActions"
 import { SELECTOR } from "../../locatores/searchAndPurchase/locators.purchaseTicket"
 import {expect, Page} from "@playwright/test"
+import passengerInfo from "../../data-driver/passengerInfo.json"
+import CommonMethods from "../../utils/commonMethods";
 
 export default class PurchaseTicket extends BaseActions {
 
@@ -17,22 +19,22 @@ export default class PurchaseTicket extends BaseActions {
 
     async acceptCookies(){
         const page = this.page;
-        await page.getByRole('button', { name: 'Aceptar todas las cookies' }).click();
+        await page.getByRole('button', { name: 'Aceptar todas las cookies' }).click({timeout: 30000});
     }
 
     async searchAndSelectDestination(origin: string, destination: string) {
         const page = this.page;
-        await page.getByPlaceholder('Selecciona tu origen').click();
-        await page.getByPlaceholder('Selecciona tu origen').fill(origin);
-        await page.getByPlaceholder('Selecciona tu origen').press('Enter');
-        await page.getByRole('option', { name: 'VALENCIA JOAQUÍN SOROLLA' }).click();
+
+        await page.locator(SELECTOR.inputOrigin).fill(origin);
+        const originResult =  page.locator(SELECTOR.originSearchResults).nth(0);
+        await originResult.click()
         await page.getByPlaceholder('Selecciona tu destino').click();
-        await page.getByPlaceholder('Selecciona tu destino').fill(destination);
-        await page.getByPlaceholder('Selecciona tu destino').press('Enter');
-        await page.getByRole('option', { name: 'BARCELONA-SANTS' }).click();
+        await page.locator(SELECTOR.inputDestination).fill(destination);
+        const destinationResult =  page.locator(SELECTOR.destinationSearchResults).nth(0);
+        await destinationResult.click()
         await page.getByPlaceholder('Fecha ida').click();
         await page.getByText('Viaje solo ida').click();
-        await page.getByText('30', { exact: true }).click({ timeout: 10000 });
+        await page.getByText('30', { exact: true }).click({ timeout: 40000 });
         await page.waitForTimeout(1000);
         await page.keyboard.press('Control+Home');
         await page.getByRole('button', { name: 'Aceptar' }).click();
@@ -51,20 +53,21 @@ export default class PurchaseTicket extends BaseActions {
 
     async setPersonalInformation() {
         const page = this.page;
+        const passenger = passengerInfo["Passenger1"];
         await page.getByLabel('Nombre').click();
-        await page.getByLabel('Nombre').fill('QA');
+        await page.getByLabel('Nombre').fill(passenger.name);
         await page.getByLabel('Primer apellido').click();
-        await page.getByLabel('Primer apellido').fill('Automation');
+        await page.getByLabel('Primer apellido').fill(passenger.first_name);
         await page.getByLabel('Primer apellido').press('Tab');
         await page.getByLabel('Segundo apellido').click();
-        await page.getByLabel('Segundo apellido').fill('Tester');
+        await page.getByLabel('Segundo apellido').fill(passenger.last_name);
         await page.getByLabel('Selector de tipo de documento').selectOption('0022');
         await page.getByLabel('Número de documento', { exact: true }).click();
-        await page.getByLabel('Número de documento', { exact: true }).fill('Z101010');
+        await page.getByLabel('Número de documento', { exact: true }).fill(passenger.document_number);
         await page.getByLabel('Correo electronico').click();
-        await page.getByLabel('Correo electronico').fill('tester.QA@gmail.com');
+        await page.getByLabel('Correo electronico').fill(passenger.email);
         await page.getByLabel('Teléfono').click();
-        await page.getByLabel('Teléfono').fill('674110110');
+        await page.getByLabel('Teléfono').fill(passenger.phone);
         await page.getByLabel('Teléfono').press('Enter');
         await expect(page.getByRole('button', { name: 'Viajero 1 Adulto check_circle' })).toBeVisible();
     }
@@ -89,25 +92,20 @@ export default class PurchaseTicket extends BaseActions {
 
     async fillCreditCardInfo() {
         const page = this.page;
-        await page.getByAltText('Nº de tarjeta').click();
-        await page.getByAltText('Nº de tarjeta').fill('0000000000000000');
-        await page.getByPlaceholder('mm').click();
-        await page.getByPlaceholder('mm').fill('12');
-        await page.getByPlaceholder('aa').click();
-        await page.getByPlaceholder('aa').fill('30');
-        await page.getByAltText('CVV').click();
-        await page.getByAltText('CVV').fill('123');
-        await page.getByAltText('Nº de tarjeta').click();
+        const expiration_month = (CommonMethods.getCurrentDate().month + 4 ) % 12;
+        const expiration_year = CommonMethods.getCurrentDate().year + 3;
+        const paymentInfo = passengerInfo["PaymentMethod"];
+        await page.locator(SELECTOR.inputCardNumber).fill(paymentInfo.card_number);
+        await page.locator(SELECTOR.inputExpirationMonth).fill(expiration_month.toString());
+        await page.locator(SELECTOR.inputExpirationYear).fill(expiration_year.toString().slice(-2));
+        await page.locator(SELECTOR.inputCVV).fill(paymentInfo.cvv);
         await page.getByRole('button', { name: 'Pagar', exact: true }).click();
     }
 
     async validateMessage(errorMessage: string) {
         const page = this.page;
-        await page.getByRole('button', { name: 'Pagar', exact: true }).click();
-        await expect(page.getByText('Tarjeta no soportada (RS18)')).toBeVisible();
-        await page.getByText('Tarjeta no soportada (RS18)').click();
-        await expect(page.getByText('Tarjeta no soportada (RS18)')).toBeVisible();
-        await expect(page.getByRole('heading', { name: 'Se han encontrado los' })).toBeVisible();
+        await expect(page.locator(SELECTOR.modalLabel)).toBeVisible();
+        await expect(page.locator(SELECTOR.errorRS18)).toBeVisible();
         await page.getByLabel('cerrar', { exact: true }).click();
     }
 

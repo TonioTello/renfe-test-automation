@@ -1,0 +1,36 @@
+{
+      "Passenger1": {
+        "name": "John",
+        "first_name": "Doe",
+        "last_name": "Smith",
+        "document_type": "0022",
+        "document_number": "Z101010",
+        "email": "john.doe@testing-renfe.com",
+        "phone": "674110110"
+      },
+      "Passenger2": {
+        "name": "Jane",
+        "first_name": "Doe",
+        "last_name": "Johnson",
+        "document_type": "0022",
+        "document_number": "Z202020",
+        "email": "jane.doe@testing-renfe.com",
+        "phone": "674110111"
+      },
+      "Passenger3": {
+        "name": "Jane",
+        "first_name": "Doe",
+        "last_name": "Johnson",
+        "document_type": "0022",
+        "document_number": "Z202020",
+        "email": "jane.doe@testing-renfe.com",
+        "phone": "674110112"
+      },
+      "PaymentMethod": {
+        "card_number": "0000000000000000",
+        "expiration_month": "12",
+        "expiration_year": "30",
+        "cvv": "123"
+      }
+ }
+  

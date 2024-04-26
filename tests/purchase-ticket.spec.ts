@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import PurchaseTicket from '../src/pages/searchAndPurchase/purchaseTicket.pages';
+import PurchaseTicket from '../src/pages/searchAndPurchase/purchaseTicket.page';
 
 test('@PurchaseWithInvalidCreditCard - test', async ({ page }) => {
  
