@@ -11,8 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "@cucumber/cucumber": "^8.5.2",
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.1",
     "@types/node": "^20.12.7",
+    "allure-playwright": "^2.15.1",
     "ts-node": "^10.9.2"
   }
 }
