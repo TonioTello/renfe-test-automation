@@ -15,6 +15,13 @@ jobs:
         node-version: lts/*
     - name: Set up Azure CLI
       uses: azure/CLI@v1
+      with:
+      inlineScript: |
+        echo "Installing AzCopy"
+        wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux
+        tar -xvf azcopy_v10.tar.gz --strip-components=1
+        sudo mv ./azcopy /usr/local/bin/
+        azcopy --version
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -28,12 +35,6 @@ jobs:
     - name: Log in to Azure CLI
       run: |
         az login --service-principal --username ${{ secrets.AZCOPY_SPA_APPLICATION_ID }} --password ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ secrets.AZCOPY_TENANT_ID }}
-    - name: Install AzCopy
-      run: |
-          wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux
-          tar -xvf azcopy_v10.tar.gz --strip-components=1
-          sudo mv ./azcopy /usr/local/bin/
-          azcopy --version
     - name: Upload HTML report to Azure
       shell: bash
       run: |
