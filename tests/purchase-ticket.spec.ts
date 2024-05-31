@@ -8,16 +8,16 @@ test('@PurchaseWithInvalidCreditCard - test', async ({ page }) => {
   await purchaseTicket.gotoWebsite(baseUrl);
   await purchaseTicket.acceptCookies();
 
-  // await purchaseTicket.searchAndSelectDestination("VALENCIA JOAQUIN SOROLLA", "BARCELONA-SANTS");
-  // await purchaseTicket.selectTrainTicket();
+  await purchaseTicket.searchAndSelectDestination("VALENCIA JOAQUIN SOROLLA", "BARCELONA-SANTS");
+  await purchaseTicket.selectTrainTicket();
 
-  // await purchaseTicket.setPersonalInformation();
-  // await purchaseTicket.skipPersonalizarViaje();
+  await purchaseTicket.setPersonalInformation();
+  await purchaseTicket.skipPersonalizarViaje();
 
-  // await purchaseTicket.setPaymentProcess();
-  // await purchaseTicket.fillCreditCardInfo();
+  await purchaseTicket.setPaymentProcess();
+  await purchaseTicket.fillCreditCardInfo();
 
-  // await purchaseTicket.validateMessage("errorMessage");
+  await purchaseTicket.validateMessage("errorMessage");
 
 
 });
