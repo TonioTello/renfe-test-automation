@@ -13,6 +13,9 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+    - uses: kheiakiyama/install-azcopy-action@v1
+      with:
+        version: 'v10'        
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -23,15 +26,11 @@ jobs:
       run: npx playwright test
     - name: Generate Allure Report
       run: allure generate allure-results -o allure-report --clean
-    - name: Log in to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Upload HTML report to Azure
       shell: bash
       run: |
         REPORT_DIR='run-${{ github.run_id }}-${{ github.run_attempt }}'
-        azcopy cp --recursive "./allure-report/*" "https://reports2024.z13.web.core.windows.net/$REPORT_DIR"
+        azcopy cp --recursive --from-to LocalBlob "./allure-report/*" "https://reports2024.z13.web.core.windows.net/\$web/REPORT_DIR0531"
         echo "::notice title=Allure report url::https://reports2024.z13.web.core.windows.net/$REPORT_DIR/index.html"
       env:
         AZCOPY_AUTO_LOGIN_TYPE: SPN
