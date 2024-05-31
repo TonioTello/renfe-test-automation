@@ -30,8 +30,8 @@ jobs:
       shell: bash
       run: |
         REPORT_DIR='run-${{ github.run_id }}-${{ github.run_attempt }}'
-        azcopy cp --recursive --from-to LocalBlob "./allure-report/*" "https://reports2024.z13.web.core.windows.net/\$web/${REPORT_DIR}"
-        echo "::notice title=Allure report url::https://reports2024.z13.web.core.windows.net/${REPORT_DIR}/index.html"
+        azcopy cp --recursive --from-to LocalBlob "./allure-report/*" "https://reports2024.blob.core.windows.net/\$web/$REPORT_DIR"
+        echo "::notice title=Allure report url::https://reports2024.z13.web.core.windows.net/$REPORT_DIR/index.html"
       env:
         AZCOPY_AUTO_LOGIN_TYPE: SPN
         AZCOPY_SPA_APPLICATION_ID: '${{ secrets.AZCOPY_SPA_APPLICATION_ID }}'
