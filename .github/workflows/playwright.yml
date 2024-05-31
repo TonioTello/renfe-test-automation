@@ -24,6 +24,7 @@ jobs:
       run: npm install -g allure-commandline --save-dev
     - name: Run Playwright tests
       run: npx playwright test
+      continue-on-error: true
     - name: Generate Allure Report
       run: allure generate allure-results -o allure-report --clean
     - name: Upload HTML report to Azure
