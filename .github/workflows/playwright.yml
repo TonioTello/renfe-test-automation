@@ -13,15 +13,6 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-    - name: Set up Azure CLI
-      uses: azure/CLI@v1
-      with:
-      inlineScript: |
-        echo "Installing AzCopy"
-        wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux
-        tar -xvf azcopy_v10.tar.gz --strip-components=1
-        sudo mv ./azcopy /usr/local/bin/
-        azcopy --version
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -32,9 +23,10 @@ jobs:
       run: npx playwright test
     - name: Generate Allure Report
       run: allure generate allure-results -o allure-report --clean
-    - name: Log in to Azure CLI
-      run: |
-        az login --service-principal --username ${{ secrets.AZCOPY_SPA_APPLICATION_ID }} --password ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }} --tenant ${{ secrets.AZCOPY_TENANT_ID }}
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Upload HTML report to Azure
       shell: bash
       run: |
