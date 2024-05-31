@@ -42,8 +42,4 @@ jobs:
       with:
         name: allure-report
         path: allure-report/
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: log-azcopy
-        path: /home/runner/.azcopy/
+
