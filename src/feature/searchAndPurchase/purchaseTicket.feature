@@ -1,7 +1,7 @@
 Feature: Search and Purchase on Renfe Website
 
 @PurchaseWithInvalidCreditCard
-  Scenario: Purchase a ticket with an invalid credit card
+  Scenario: Purchase a ticket with an invalid credit card 
     Given the user is on the Renfe website
     When the user selects the destination "VALENCIA JOAQUIN SOROLLA" to "BARCELONA-SANTS"
     And the user enters personal information
