@@ -34,9 +34,8 @@ export default class PurchaseTicket extends BaseActions {
         await destinationResult.click()
         await page.getByPlaceholder('Fecha ida').click();
         await page.getByText('Viaje solo ida').click();
-        await page.getByText('30', { exact: true }).click({ timeout: 40000 });
-        await page.waitForTimeout(1000);
-        await page.keyboard.press('Control+Home');
+        await page.getByText('20', { exact: true }).click({ timeout: 40000 });
+        await page.evaluate(() => {window.scrollTo(0, 0);});        
         await page.getByRole('button', { name: 'Aceptar' }).click();
         await page.getByRole('button', { name: 'Buscar billete' }).click();
     }
